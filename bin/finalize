@@ -34,9 +34,9 @@ generate_boot_script () {
     cat >>boot.sh <<EOF
 # Update port
 echo "Updating port information"
-ls -lrt /app
-ls -lrt /app/httpd
-ls -lrt /app/httpd/conf
+ls -lrt /home/vcap/app
+ls -lrt /home/vcap/app/httpd
+ls -lrt /home/vcap/app/httpd/conf
 sed -i 's/Listen 80/Listen '\$PORT'/' /app/httpd/conf/httpd.conf
 
 # Make sure environment variables get passed through
