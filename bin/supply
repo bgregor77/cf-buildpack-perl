@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+
+# INITIALIZE ###########################################################
+
+# fail fast
+set -e
+
+# The script is run with four arguments:
+
+#   * The build directory for the app
+#   * The cache directory, which is a location the buildpack can use to store assets during the build process
+#   * The deps directory, which is where dependencies provided by all buildpacks are installed
+#   * The index, which is a number that represents the ordinal position of the buildpack
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+DEPS_DIR=$3
+BP_INDEX=$4
+CONFIG_DIR=`cd $(dirname $0); cd ../conf; pwd`
+
+# FUNCTIONS ############################################################
+
+download_httpd () {
+    echo "o--- Downloading httpd"
+    cd $DEPS_DIR/$BP_INDEX
+    APACHE_BUNDLE="https://s3.us-east-2.amazonaws.com/cjd-buildpack/httpd-2.4.23-linux-x64.tgz"
+    curl  --location $APACHE_BUNDLE | tar xz
+}
+
+install_httpd () {
+    echo "o--- Installing httpd"
+    cd $BUILD_DIR
+    tar -xz $DEPS_DIR/$BP_INDEX/httpd-2.4.23-linux-x64.tgz .
+}
+
+update_configuration () {    
+    echo "o--- Updating httpd configuration"
+    cd $BUILD_DIR
+    cp $CONFIG_DIR/httpd.conf httpd/conf/httpd.conf
+}
+
+# MAIN #################################################################
+
+download_httpd()
+install_httpd()
+update_configuration()
