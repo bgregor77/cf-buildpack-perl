@@ -33,7 +33,7 @@ download_httpd () {
 install_httpd () {
     echo "o--- Installing httpd"
     cd $BUILD_DIR
-    tar -xz $DEPS_DIR/$BP_INDEX/$APACHE_BUNDLE
+    tar -xvzf $DEPS_DIR/$BP_INDEX/$APACHE_BUNDLE
 }
 
 update_configuration () {    
