@@ -37,7 +37,7 @@ download_httpd () {
 }
 
 deploy_app_artifacts () {
-    echo "o--- Deploy app artifacts to DocumentRoot"
+    echo "o--- Deploying application artifacts to DocumentRoot"
     cd $BUILD_DIR
     # deploy application artifacts to www directory, which is set as the DocumentRoot in httpd.conf
     mkdir -p $CACHE_DIR/www
@@ -48,8 +48,6 @@ deploy_app_artifacts () {
         mv $CACHE_DIR/www/lib .
     fi
     mv $CACHE_DIR/www .
-
-    ls -lrt $BUILD_DIR
 }
 
 install_httpd () {
@@ -61,9 +59,7 @@ install_httpd () {
 update_configuration () {    
     echo "o--- Updating httpd configuration"
     cd $BUILD_DIR
-    ls -lrt
-    cp $CONFIG_DIR/httpd.conf httpd/conf/httpd.conf
-    ls -lrt httpd/conf
+    cp $CONFIG_DIR/httpd.conf httpd/conf/httpd.conf    
 }
 
 # MAIN #################################################################
