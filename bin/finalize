@@ -21,13 +21,7 @@ CONFIG_DIR=`cd $(dirname $0); cd ../conf; pwd`
 
 # FUNCTIONS ############################################################
 
-deploy_app_artifacts () {
-    cd $BUILD_DIR
 
-    # deploy application artifacts to www directory, which is set as the DocumentRoot in httpd.conf
-    mkdir -p $CACHE_DIR/www
-    mv * $CACHE_DIR/www
-}
 
 generate_boot_script () {
     cd $BUILD_DIR
@@ -59,5 +53,4 @@ EOF
 
 # MAIN #################################################################
 
-deploy_app_artifacts
 generate_boot_script
