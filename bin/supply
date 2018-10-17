@@ -62,9 +62,13 @@ update_configuration () {
     cp $CONFIG_DIR/httpd.conf httpd/conf/httpd.conf    
 }
 
+install_perl_modules () {
+    curl -L cpanmin.us | perl - -l $HOME/perl5 App::cpanminus local::lib Catalyst::Devel
+}
 # MAIN #################################################################
 
 download_httpd
 deploy_app_artifacts
 install_httpd
 update_configuration
+install_perl_modules
