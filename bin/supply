@@ -53,7 +53,7 @@ deploy_app_artifacts () {
 install_httpd () {
     echo "o--- Installing httpd"
     cd $BUILD_DIR
-    tar -xz $DEPS_DIR/$BP_INDEX/$APACHE_BUNDLE
+    tar -xzf $DEPS_DIR/$BP_INDEX/$APACHE_BUNDLE
 }
 
 update_configuration () {    
