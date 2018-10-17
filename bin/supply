@@ -26,7 +26,7 @@ download_httpd () {
     cd $DEPS_DIR/$BP_INDEX
     pwd    
     APACHE_BUNDLE="https://s3.us-east-2.amazonaws.com/cjd-buildpack/httpd-2.4.23-linux-x64.tgz"
-    curl  --location $APACHE_BUNDLE | tar xz
+    curl  --location $APACHE_BUNDLE
     ls -lrt
 }
 
