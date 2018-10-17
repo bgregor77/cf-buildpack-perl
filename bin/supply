@@ -48,6 +48,8 @@ deploy_app_artifacts () {
         mv $CACHE_DIR/www/lib .
     fi
     mv $CACHE_DIR/www .
+
+    ls -lrt $BUILD_DIR
 }
 
 install_httpd () {
