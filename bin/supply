@@ -63,7 +63,7 @@ update_configuration () {
 }
 
 install_perl_modules () {
-    curl -L cpanmin.us | perl - -l $HOME/perl5 App::cpanminus local::lib Catalyst::Devel
+    cpan Catalyst::Devel
 }
 # MAIN #################################################################
 
