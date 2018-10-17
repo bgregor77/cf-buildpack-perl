@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+
+
+# INITIALIZE ###########################################################
+
+# fail fast
+set -e
+
+# The script is run with four arguments:
+
+#   * The build directory for the app
+#   * The cache directory, which is a location the buildpack can use to store assets during the build process
+#   * The deps directory, which is where dependencies provided by all buildpacks are installed
+#   * The index, which is a number that represents the ordinal position of the buildpack
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+DEPS_DIR=$3
+BP_INDEX=$4
+CONFIG_DIR=`cd $(dirname $0); cd ../conf; pwd`
+
+# FUNCTIONS ############################################################
+
+
+
+generate_boot_script () {
+    cd $BUILD_DIR
+    cat >>boot.sh <<EOF
+# Update port
+echo "Updating port information"
+ls -lrt /home/vcap/app
+ls -lrt /home/vcap/app/httpd
+ls -lrt /home/vcap/app/httpd/conf
+sed -i 's/Listen 80/Listen '\$PORT'/' /app/httpd/conf/httpd.conf
+
+# Make sure environment variables get passed through
+for var in \`env|cut -f1 -d=\`; do
+  echo "PassEnv \$var" >> /app/httpd/conf/httpd.conf;
+done
+
+# Stream logs to stdout
+touch /app/httpd/logs/error_log
+touch /app/httpd/logs/access_log
+tail -F /app/httpd/logs/error_log &
+tail -F /app/httpd/logs/access_log &
+
+echo "Launching apache..."
+#exec /app/httpd/bin/httpd -DNO_DETACH
+/app/httpd/bin/apachectl -k start
+EOF
+
+}
+
+# MAIN #################################################################
+
+generate_boot_script

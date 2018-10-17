@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+
+
+# INITIALIZE ###########################################################
+
+# fail fast
+set -e
+
+# The script is run with four arguments:
+
+#   * The build directory for the app
+#   * The cache directory, which is a location the buildpack can use to store assets during the build process
+#   * The deps directory, which is where dependencies provided by all buildpacks are installed
+#   * The index, which is a number that represents the ordinal position of the buildpack
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+DEPS_DIR=$3
+BP_INDEX=$4
+CONFIG_DIR=`cd $(dirname $0); cd ../conf; pwd`
+
+echo "BUILD_DIR=$BUILD_DIR"
+echo "CACHE_DIR=$CACHE_DIR"
+echo "DEPS_DIR=$DEPS_DIR"
+echo "BP_INDEX=$BP_INDEX"
+echo "CONFIG_DIR=$CONFIG_DIR"
+
+
+# FUNCTIONS ############################################################
+
+download_httpd () {
+    echo "o--- Downloading httpd"
+    cd $DEPS_DIR/$BP_INDEX    
+    APACHE_BUNDLE="httpd-2.4.23-linux-x64.tgz"    
+    APACHE_PKG_URL="https://s3.us-east-2.amazonaws.com/cjd-buildpack/$APACHE_BUNDLE"
+    curl  --location $APACHE_PKG_URL -o $APACHE_BUNDLE
+}
+
+deploy_app_artifacts () {
+    echo "o--- Deploying application artifacts to DocumentRoot"
+    cd $BUILD_DIR
+    # deploy application artifacts to www directory, which is set as the DocumentRoot in httpd.conf
+    mkdir -p $CACHE_DIR/www
+    mv * $CACHE_DIR/www
+
+    # Handle a lib directory if it exists, move to ServerRoot
+    if [ -f $CACHE_DIR/www/lib ]; then
+        mv $CACHE_DIR/www/lib .
+    fi
+    mv $CACHE_DIR/www .
+}
+
+install_httpd () {
+    echo "o--- Installing httpd"
+    cd $BUILD_DIR
+    tar -xzf $DEPS_DIR/$BP_INDEX/$APACHE_BUNDLE
+}
+
+update_configuration () {    
+    echo "o--- Updating httpd configuration"
+    cd $BUILD_DIR
+    cp $CONFIG_DIR/httpd.conf httpd/conf/httpd.conf    
+}
+
+# MAIN #################################################################
+
+download_httpd
+deploy_app_artifacts
+install_httpd
+update_configuration
