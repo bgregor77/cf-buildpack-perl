@@ -39,7 +39,9 @@ install_httpd () {
 update_configuration () {    
     echo "o--- Updating httpd configuration"
     cd $BUILD_DIR
+    ls -lrt
     cp $CONFIG_DIR/httpd.conf httpd/conf/httpd.conf
+    ls -lrt httpd/conf
 }
 
 # MAIN #################################################################
