@@ -42,6 +42,6 @@ update_configuration () {
 
 # MAIN #################################################################
 
-download_httpd()
-install_httpd()
-update_configuration()
+download_httpd
+install_httpd
+update_configuration

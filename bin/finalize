@@ -55,5 +55,5 @@ EOF
 
 # MAIN #################################################################
 
-deploy_app_artifacts()
-generate_boot_script()
+deploy_app_artifacts
+generate_boot_script
